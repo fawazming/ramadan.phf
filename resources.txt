@@ -1,0 +1,23 @@
+https://ucarecdn.com/1c9a56e0-ec3c-414d-b4a7-afa0590f758f/-/smart_resize/270x420/
+
+https://raw.githubusercontent.com/fawazming/cdn/master/RamadanContent.json
+
+{
+  "quotes": [
+    {
+      "day": "2",
+      "quote": "<p>As we prepare for the month of Ramadan, let us purify our hearts, strengthen our faith, and renew our commitment to Allah.</p>",
+      "Donations": {
+        "received": "21,000",
+        "balance": "4,979,000"
+      },
+      "image": {
+        "provider": "uploadcare",
+        "type": "image",
+        "id": "1c9a56e0-ec3c-414d-b4a7-afa0590f758f",
+        "height": 427,
+        "width": 640
+      }
+    }
+  ]
+}

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- <link rel="stylesheet" type="text/css" href="../awsm.css"> -->
+    <title>Cards</title>
+</head>
+<script src="./mmm.js"></script>
+<style type="text/css">
+.hidden {
+    display: none;
+}
+</style>
+
+<body>
+    <div id="login">
+        <h1>Login</h1> <br>
+        <form id="loginForm">
+            <input type="text" name="uname" placeholder="Username">
+            <input type="password" name="pass" placeholder="Password">
+            <center><input type="submit" value="Login"></center>
+        </form>
+    </div>
+    <div id="dashboard" class="hidden">
+        <h1>Dashboard</h1>
+        <p>Welcome back, &nbsp; &nbsp; &nbsp; &nbsp; <button id="logout">Logout</button>
+            <h3>Fetch Data</h3>
+            <form id="fetch">
+                <input type="text" id="dayy" placeholder="Day">
+                <input type="submit" value="Fetch" id="fetchData">
+            </form>
+        </p>Don’t be perfect, just keep getting better
+        <form id="details">
+            <input type="text" id="dayIn" placeholder="Day">
+            <input type="text" id="introIn" placeholder="Intro">
+            <textarea id="quoteIn" placeholder="Quote"></textarea>
+            <input type="text" id="sourceIn" placeholder="Source">
+            <input type="text" id="receivedIn" placeholder="Received">
+            <input type="text" id="balanceIn" placeholder="balance">
+            <input type="text" id="imggIn" placeholder="imgg">
+            <input type="submit" value="Create Image" id="createImg">
+        </form>
+        <div class="dp" style="padding: 0; background-image: url('./pR.jpg'); color: #000; width: 1080px; height: 1080px; font-family: sans-serif;  padding-top: 15px;" id="dp">
+            <!-- <img src="https://ucarecdn.com/1c9a56e0-ec3c-414d-b4a7-afa0590f758f/-/smart_resize/455x640/"
+                style="margin-left: 40px; margin-top: 250px; padding: 0; position: absolute;"> -->
+            <p id="dayN" style="font-family: consolas; margin-left: 762px; margin-top: 22px; padding: 0; font-size: 5.5rem; font-weight: 800; position: absolute;"></p>
+            <p id="dayP" style="font-family: consolas; margin-left: 920px; margin-top: 22px; padding: 0; font-size: 5.5rem; font-weight: 800; position: absolute;"></p>
+            <img src="./img/img (2).jpg" style="margin-left: 40px; margin-top: 250px; padding: 0; position: absolute;" id="immg">
+            <div style="font-size: 1.2rem; margin-left: 580px; margin-top: 250px; width: 420px; font-weight: 200; font-style: italic;">
+                <p id="introOut">
+                </p>
+            </div>
+            <div id="quoteOut" style="font-size: 1.8rem; margin-left: 580px; margin-top: 8px; width: 420px; font-weight: 600; position: absolute;">
+            </div>
+            <p style="font-family: consolas; margin-left: 550px; margin-top: 679px; padding: 0; font-size: 2.0rem; font-weight: 800; position: absolute; color: #55e;">₦<span id="receivedOut"></span></p>
+            <p style="font-family: consolas; margin-left: 920px; margin-top: 679px; padding: 0; font-size: 1.8rem; font-weight: 800; position: absolute; color: #e55;">₦<span id="balanceOut"></span></p>
+        </div>
+        <button id="preview">Preview DP</button>
+        <br>
+        <a id="download" href="#">Download DP</a>
+    </div>
+    <script type="text/javascript">
+    // Login
+        function LoggedIn() {
+            document.querySelector('#login').classList.add('hidden')
+            document.querySelector('#dashboard').classList.remove('hidden')
+        }
+
+        let isLoggedIn = localStorage.getItem('isLoggedIn');
+        if (isLoggedIn === 'true') {
+            LoggedIn()
+        }
+
+        let uname = document.querySelector('[name="uname"]')
+        let pass = document.querySelector('[name="pass"]')
+
+        document.querySelector('#loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+
+            if (uname.value == 'demo' && pass.value == 'demo') {
+                LoggedIn();
+                localStorage.setItem('isLoggedIn', 'true')
+
+            } else {
+                console.log('Invalid Login details');
+            }
+        })
+
+        document.querySelector('#logout').addEventListener('click', () => {
+            localStorage.removeItem('isLoggedIn')
+            location.reload()
+        })
+    // login
+
+    // Cards
+        function field(id) {
+            $(`#${id}Out`).html($(`#${id}In`).val())
+        }
+
+        function setter(id, v) {
+            $(`#${id}In`).val(v)
+        }
+
+        $('#details').submit(function(e) {
+            e.preventDefault();
+            let day = $('#dayIn').val();
+            $('#dayN').html(`${30-day}`)
+            $('#dayP').html(`${29-day}`)
+            document.querySelector('#immg').src = $('#imggIn').val()
+            field('quote');
+            field('intro');
+            field('source');
+            field('balance');
+            field('received');
+        });
+        let getCanvas;
+        $('#preview').on('click', function() {
+            h2i();
+        });
+
+        function h2i() {
+            html2canvas($('#dp'), {
+                onrendered: function(canvas) {
+                    $('#preview').append(canvas);
+                    getCanvas = canvas;
+                }
+            });
+        }
+
+        $('#download').on('click', function() {
+
+            var imgageData = getCanvas.toDataURL("image/png");
+            $('#download').attr(
+                "download", `preRamadan.png`).attr(
+                "href", imgageData);
+
+        });
+    // Cards
+
+    //Fetch
+    $('#fetchData').on('click', function(e) {
+        e.preventDefault();
+        let dd = $('#dayy').val();
+        fetch('https://raw.githubusercontent.com/fawazming/cdn/master/RamadanContent.json')
+        .then(res => res.json())
+        .then((data) => {
+            let dt = data.quotes.filter((d) => {return d.day === dd})
+            console.log(dt)
+            setter('day',dt[0].day);
+            setter('intro',dt[0].intro);
+            setter('quote',dt[0].quote);
+            setter('source',dt[0].source);
+            setter('received',dt[0].Donations.received);
+            setter('balance',dt[0].Donations.balance);
+            $('#imggIn').val(`./img/img (${Math.floor(Math.random() * 13)+1}).jpg`)
+        });
+    })
+    //Fetch
+    </script>
+</body>
+
+</html>
